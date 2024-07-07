@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     inc();
     Future.delayed(const Duration(seconds: 4), () {
-      context.push('/home');
+      context.go('/home');
     });
     // TODO: implement initState
     super.initState();
@@ -37,28 +37,23 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: AnimatedContainer(
-          duration: const Duration(seconds: 4),
-          height: _height,
-          width: _width,
-          child: Stack(
-            children: [
-              Lottie.asset(
-                  'assets/lottie/weather.json',
-                backgroundLoading: true,
-              ),
-              Positioned(
-                top: 70,
-                left: 25,
-                child: SvgPicture.asset(
-                  'assets/images/cloud.svg',
-                  height: 60,
-                  width: 60,
-
-                ),
-              )
-            ],
-          ),
+        child: Stack(
+          children: [
+            Lottie.asset(
+                'assets/lottie/weather.json',
+              backgroundLoading: true,
+            ),
+            // Positioned(
+            //   top: 70,
+            //   left: 25,
+            //   child: SvgPicture.asset(
+            //     'assets/images/cloud.svg',
+            //     height: 60,
+            //     width: 60,
+            //
+            //   ),
+            // )
+          ],
         ),
       ),
     );

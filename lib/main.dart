@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
               // onExit: (BuildContext context) {Navigator.of(context).pop(true);}
             ),
           ],
-          initialLocation: '/home'
+          initialLocation: '/'
         ),
 
         title: 'Flutter Demo',
