@@ -21,39 +21,54 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late final LocationBloc bloc;
-  late final String? lastSearched;
-  late final SharedPreferences prefs;
+  late String? lastSearched, lat, lon;
+  late SharedPreferences prefs;
 
   @override
   void initState() {
     lastSearched = null;
+    lat = null; lon = null;
+    init();
     getLastSearched();
     bloc = LocationBloc();
     // TODO: implement initState
     super.initState();
   }
 
+  void init() async {
+    prefs = await SharedPreferences.getInstance();
+  }
 
 
   void getLastSearched() async {
     prefs = await SharedPreferences.getInstance();
     if(prefs.containsKey('last-searched-city')) {
+      String? ls = lastSearched;
       lastSearched = prefs.getString('last-searched-city');
+      lat = prefs.getString('last-searched-lat');
+      lon = prefs.getString('last-searched-lon');
       if(kDebugMode) {
         print('LAST SEARCHED: $lastSearched');
+        if(ls == null) {
+          bloc.add(LocationInitialize());
+        }
       }
     }
     else {
       lastSearched = null;
+      lat = null;
+      lon = null;
     }
   }
 
-  void setLastSearched(String city) async {
+  void setLastSearched(String city, String lat, String lon) async {
     if (kDebugMode) {
       print('SETTING TO: $city');
     }
     prefs = await SharedPreferences.getInstance();
     await prefs.setString('last-searched-city', city);
+    await prefs.setString('last-searched-lat', lat);
+    await prefs.setString('last-searched-lon', lon);
     if (kDebugMode) {
       print('SETTING TO: ${prefs.getString('last-searched-city')}');
     }
@@ -89,9 +104,15 @@ class _HomePageState extends State<HomePage> {
               child: TextField(
                 onChanged: (value) {
                   // BlocProvider.of<LocationBloc>(context).add(LocationLoad(value));
-                  bloc.add(LocationLoad(value));
+                  if(value == '') {
+                    // bloc.emit(LocationInitial());
+                    bloc.add(const LocationInitialize());
+                  }
+                  else {
+                    bloc.add(LocationLoad(value));
+                  }
                   // context.read<LocationBloc>().add(LocationLoad(value));
-                  print(value);
+                  // print(value);
                 },
                 style: const TextStyle(color: Color(0xff928794)),
                 decoration: const InputDecoration(
@@ -100,13 +121,8 @@ class _HomePageState extends State<HomePage> {
                   focusColor: Color(0xff928794),
                   border: InputBorder.none,
                   icon: Icon(Icons.search, color: Color(0xff928794),
-
-
                   ),
-
-
                 ),
-
               ),
             ),
 
@@ -119,19 +135,31 @@ class _HomePageState extends State<HomePage> {
                   print('BUILT');
                   print(lastSearched);
                 }
-                return Container(
-                  height: 35,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      color: Colors.white70
-                  ),
-                  padding: EdgeInsets.all(7),
-                  child: FittedBox(
-                    child: Text(
-                      lastSearched ?? 'No city searched yet',
-                      style: TextStyle(
-                        color: AppColor.primaryColor,
-                        fontSize: 14,
+                return InkWell(
+                  onTap: () {
+                    if(lastSearched != null) {
+                      context.push('/details',
+                          extra: {
+                            'lat': lat ?? '0',
+                            'lon': lon ?? '0',
+                          }
+                      );
+                    }
+                  },
+                  child: Container(
+                    height: 38,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25),
+                        color: Colors.white70
+                    ),
+                    padding: EdgeInsets.all(10),
+                    child: FittedBox(
+                      child: Text(
+                        lastSearched ?? 'No city searched yet',
+                        style: TextStyle(
+                          color: AppColor.primaryColor,
+                          fontSize: 14,
+                        ),
                       ),
                     ),
                   ),
@@ -154,7 +182,7 @@ class _HomePageState extends State<HomePage> {
                           itemBuilder: (context, index) {
                             return InkWell(
                               onTap: () async {
-                                setLastSearched(list[index].name!);
+                                setLastSearched(list[index].name!, list[index].lat.toString(), list[index].lon.toString());
                                 context.push('/details',
                                     extra: {
                                       'lat': list[index].lat.toString(),
@@ -179,52 +207,30 @@ class _HomePageState extends State<HomePage> {
                                     ),),
                                 ),
                               )
-                              // child: Stack(
-                              //   children: [
-                              //     SvgPicture.asset(
-                              //       'assets/images/list_item.svg',
-                              //       width: double.infinity,
-                              //       height: 180,
-                              //     ),
-                              //     Positioned(
-                              //       top: 70,
-                              //       left: 20,
-                              //       child: Text(
-                              //         '${list[index].name ?? ''}, ${list[index]
-                              //             .state ?? ''}, ${list[index]
-                              //             .country ?? ''}',
-                              //         style: const TextStyle(
-                              //             color: AppColor.accentColor
-                              //         ),),
-                              //     )
-                              //   ],
-                              // ),
+
                             );
-                            // title: Text('City $index'),
-                            // onTap: () {
-                            //   // Navigator.of(context).pushNamed('/details');
-                            //   context.go('/details', extra: {'city': 'City $index'});
-                            // },
-                            // );
                           },
                         ),
                       ),
                     );
                   }
                   else if (state is LocationLoading) {
-                    return const Center (
-                      child: CircularProgressIndicator(
-                        color: AppColor.accentColor,
+                    return const Expanded(
+                      child: Center (
+                        child: CircularProgressIndicator(
+                          color: AppColor.accentColor,
+                        ),
                       ),
                     );
                   }
                   else if (state is LocationError) {
-                    return const Center (
-                      child: Text(
-                        'Error while loading locations !!',
-                        style: TextStyle(
-                          color: AppColor.accentColor,
-                          fontSize: 16,
+                    return const Expanded(
+                      child: Center (
+                        child: Text(
+                          'Error while loading locations !!',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
                         ),
                       ),
                     );
@@ -238,26 +244,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-}
-
-class MyPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()
-      ..color = Colors.white;
-    canvas.drawArc(
-      Rect.fromCenter(
-        center: Offset(size.height / 2, size.width / 2),
-        height: size.height,
-        width: size.width,
-      ),
-      math.pi * 2,
-      math.pi * 2,
-      true,
-      paint,
-    );
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }

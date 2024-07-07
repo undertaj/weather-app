@@ -14,7 +14,12 @@ part 'location_state.dart';
 class LocationBloc extends Bloc<LocationEvent, LocationState> {
   LocationBloc() : super(LocationInitial()) {
     on<LocationLoad>(_onLocationLoad);
+    on<LocationInitialize>(_onLocationInitialize);
 
+  }
+  void _onLocationInitialize(LocationInitialize event, Emitter<LocationState> emit) async {
+    emit(LocationInit());
+    emit(LocationInitial());
   }
   void _onLocationLoad(LocationLoad event, Emitter<LocationState> emit) async {
     emit(LocationLoading());

@@ -10,6 +10,8 @@ class LocationState extends Equatable {
 
 class LocationInitial extends LocationState {}
 
+class LocationInit extends LocationState {}
+
 class LocationLoading extends LocationState {}
 
 class LocationLoaded extends LocationState {

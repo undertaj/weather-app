@@ -161,12 +161,16 @@ class _DetailsPageState extends State<DetailsPage> {
                                 borderRadius: BorderRadius.circular(20),
                                 color: AppColor.secondaryColor.withOpacity(0.3),
                               ),
-                              child: Column(
-                                children: [
-                                  Text('${weather.wind?.speed} m/s'),
-                                  SizedBox(height: 5,),
-                                  Text(getDirection(weather.wind!.deg!)),
-                                ],
+                              child: Center(
+                                child: FittedBox(
+                                  child: Column(
+                                    children: [
+                                      Text('${weather.wind?.speed} m/s'),
+                                      SizedBox(height: 5,),
+                                      Text(getDirection(weather.wind!.deg!)),
+                                    ],
+                                  ),
+                                ),
                               )
                             ),
                             SizedBox(height: 10,),
@@ -178,12 +182,16 @@ class _DetailsPageState extends State<DetailsPage> {
                                   borderRadius: BorderRadius.circular(20),
                                   color: AppColor.secondaryColor.withOpacity(0.3),
                                 ),
-                                child: Column(
-                                  children: [
-                                    Text('${DateFormat("h:mma").format(DateTime.parse(weather.sys!.sunrise.toString()))} Sunrise'),
-                                    SizedBox(height: 5,),
-                                    Text('${DateFormat("h:mma").format(DateTime.parse(weather.sys!.sunset.toString()))} Sunset'),
-                                  ],
+                                child: Center(
+                                  child: FittedBox(
+                                    child: Column(
+                                      children: [
+                                        Text('${DateFormat("h:mma").format(DateTime.parse(weather.sys!.sunrise.toString()))} Sunrise'),
+                                        SizedBox(height: 5,),
+                                        Text('${DateFormat("h:mma").format(DateTime.parse(weather.sys!.sunset.toString()))} Sunset'),
+                                      ],
+                                    ),
+                                  ),
                                 )
                             ),
                           ],
@@ -202,7 +210,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                 ListTile(
                                   titleTextStyle: TextStyle(
                                     color: AppColor.accentColor,
-                                    fontSize: 13
+                                    fontSize: 14
                                   ),
                                   textColor: AppColor.accentColor,
                                   title: Text('Humidity'),
@@ -211,10 +219,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                 ListTile(
                                   titleTextStyle: TextStyle(
                                       color: AppColor.accentColor,
-                                      fontSize: 13
-                                  ),
-                                  leadingAndTrailingTextStyle: TextStyle(
-                                    fontSize: 10
+                                      fontSize: 14
                                   ),
                                   textColor: AppColor.accentColor,
                                   title: Text('Real feel'),
@@ -223,7 +228,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                 ListTile(
                                   titleTextStyle: TextStyle(
                                       color: AppColor.accentColor,
-                                      fontSize: 13
+                                      fontSize: 14
                                   ),
                                   textColor: AppColor.accentColor,
                                   title: Text('Pressure'),
@@ -235,68 +240,68 @@ class _DetailsPageState extends State<DetailsPage> {
                       ],
                     ),
                     const SizedBox(height: 10,),
-                    Container(
-                      padding: const EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: AppColor.secondaryColor.withOpacity(0.3),
-                      ),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(Icons.calendar_month),
-                                  SizedBox(width: 5,),
-                                  Text('5-day forecast',),
-                                ],
-                              ),
-                              TextButton(
-                                onPressed: () {},
-                                child: const Row(
-                                  children: [
-                                    Text('More details'),
-                                    SizedBox(width: 4,),
-                                    Icon(Icons.arrow_right),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(Icons.calendar_month),
-                                  SizedBox(width: 5,),
-                                  Text('5-day forecast',),
-                                ],
-                              ),
-                              TextButton(
-                                onPressed: () {},
-                                child: const Row(
-                                  children: [
-                                    Text('Mode details'),
-                                    SizedBox(width: 4,),
-                                    Icon(Icons.arrow_right),
-                                  ],
-                                ),
-
-                              )
-                            ],
-                          ),
-                          ElevatedButton(
-
-                              onPressed: () {},
-                              child: Text('5-day Forecast')
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 10,),
+                    // Container(
+                    //   padding: const EdgeInsets.all(8.0),
+                    //   decoration: BoxDecoration(
+                    //     borderRadius: BorderRadius.circular(20),
+                    //     color: AppColor.secondaryColor.withOpacity(0.3),
+                    //   ),
+                    //   child: Column(
+                    //     children: [
+                    //       Row(
+                    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //         children: [
+                    //           Row(
+                    //             children: [
+                    //               Icon(Icons.calendar_month),
+                    //               SizedBox(width: 5,),
+                    //               Text('5-day forecast',),
+                    //             ],
+                    //           ),
+                    //           TextButton(
+                    //             onPressed: () {},
+                    //             child: const Row(
+                    //               children: [
+                    //                 Text('More details'),
+                    //                 SizedBox(width: 4,),
+                    //                 Icon(Icons.arrow_right),
+                    //               ],
+                    //             ),
+                    //           )
+                    //         ],
+                    //       ),
+                    //       Row(
+                    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //         children: [
+                    //           Row(
+                    //             children: [
+                    //               Icon(Icons.calendar_month),
+                    //               SizedBox(width: 5,),
+                    //               Text('5-day forecast',),
+                    //             ],
+                    //           ),
+                    //           TextButton(
+                    //             onPressed: () {},
+                    //             child: const Row(
+                    //               children: [
+                    //                 Text('Mode details'),
+                    //                 SizedBox(width: 4,),
+                    //                 Icon(Icons.arrow_right),
+                    //               ],
+                    //             ),
+                    //
+                    //           )
+                    //         ],
+                    //       ),
+                    //       ElevatedButton(
+                    //
+                    //           onPressed: () {},
+                    //           child: Text('5-day Forecast')
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    // SizedBox(height: 10,),
                     Container(
                       height: 50,
                       width: MediaQuery.of(context).size.width,
