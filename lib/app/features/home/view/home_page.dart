@@ -23,6 +23,7 @@ class _HomePageState extends State<HomePage> {
   late final LocationBloc bloc;
   late String? lastSearched, lat, lon;
   late SharedPreferences prefs;
+  TextEditingController cityController = TextEditingController();
 
   @override
   void initState() {
@@ -36,6 +37,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   void init() async {
+    cityController.addListener((){
+      // bloc.close();
+      // bloc = LocationBloc();
+      if(cityController.text.toString() == '') {
+        bloc.add(const LocationLoad(' '));
+      }
+      else {
+        bloc.add(LocationLoad(cityController.text));
+      }
+    });
     prefs = await SharedPreferences.getInstance();
   }
 
@@ -102,18 +113,19 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               child: TextField(
-                onChanged: (value) {
-                  // BlocProvider.of<LocationBloc>(context).add(LocationLoad(value));
-                  if(value == '') {
-                    // bloc.emit(LocationInitial());
-                    bloc.add(const LocationInitialize());
-                  }
-                  else {
-                    bloc.add(LocationLoad(value));
-                  }
-                  // context.read<LocationBloc>().add(LocationLoad(value));
-                  // print(value);
-                },
+                controller: cityController,
+                // onChanged: (value) {
+                //   // BlocProvider.of<LocationBloc>(context).add(LocationLoad(value));
+                //   if(value == '') {
+                //     // bloc.emit(LocationInitial());
+                //     bloc.add(const LocationInitialize());
+                //   }
+                //   else {
+                //     bloc.add(LocationLoad(value));
+                //   }
+                //   // context.read<LocationBloc>().add(LocationLoad(value));
+                //   // print(value);
+                // },
                 style: const TextStyle(color: Color(0xff928794)),
                 decoration: const InputDecoration(
                   hintText: 'Search for a city',
@@ -243,5 +255,11 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    bloc.close();
+    super.dispose();
   }
 }

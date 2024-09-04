@@ -59,8 +59,8 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
 
           textTheme: const TextTheme(
-            bodyText1: TextStyle(),
-            bodyText2: TextStyle(),
+            bodyMedium: TextStyle(),
+            bodyLarge: TextStyle(),
           ).apply(
             bodyColor: AppColor.accentColor,
             displayColor: AppColor.accentColor,
